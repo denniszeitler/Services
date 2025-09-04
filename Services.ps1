@@ -10,6 +10,8 @@ $repo = Get-PSRepository -Name 'PSGallery';
 $installPath = "C:\Temp\Services\";
 $db = ($installPath + "db.sqlite");
 #
+$defaultLocation = "DataCenter";
+#
 
 if(-not (Test-Path -Path $installPath )) {
     Write-Host "Create InstallFolder...'";
@@ -106,10 +108,19 @@ Invoke-SqliteQuery -DataSource $db -Query $cServiceDependencyQuery;
 # --- END --- #
 
 # --- INSERT INTO tables --- #
+# temp idea/to-do:  define locations/critcality at script header?
 #
-$iLocationQuery = "INSERT INTO Location (LocationName) VALUES ('DefaultLocation');"
+$iLocationQuery = "INSERT INTO Location (LocationName) VALUES ('$defaultLocation');"
 Invoke-SqliteQuery -DataSource $db -Query $iLocationQuery;
 #
-$iCriticalityQuery = "INSERT INTO criticality (CriticalityLevel) VALUES ('1');"
+$iCriticalityQuery = @"
+INSERT INTO criticality (CriticalityLevel) 
+VALUES 
+  ('Hochkritisch'),
+  ('Kritisch'),
+  ('Wichtig'),
+  ('Unkritisch');
+"@
 Invoke-SqliteQuery -DataSource $db -Query $iCriticalityQuery;
 # --- END --- #
+

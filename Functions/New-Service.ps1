@@ -32,5 +32,6 @@ If(-not $LocationID){
 }
 $newServiceQuery = "INSERT INTO service (ServiceName,LocationID,CriticalityID) VALUES ('$Name','$LocationID','$CriticalityLevel')";
 Invoke-SqliteQuery -DataSource $DataSource -Query  $newServiceQuery;
-    
 }
+
+
